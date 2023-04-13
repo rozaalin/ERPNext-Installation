@@ -50,7 +50,7 @@ I am using **wsc** as frappe-user
 ## Follow these steps in the Database server
 
 
-###Setup the remote DB to accept remote connections
+### Setup the remote DB to accept remote connections
 
 ### Install MariaDB 10.6 stable package
 MariaDB is developed as open source software and as a relational database it provides an SQL interface for accessing data.
