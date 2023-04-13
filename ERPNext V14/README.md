@@ -13,6 +13,8 @@ A complete Guide to Install Frappe Bench in Ubuntu 22.04 LTS and install Frappe/
     cron                                          (bench's scheduled jobs: automated certificate renewal, scheduled backups)
     NGINX                                         (proxying multitenant sites in production)
 
+## Follow these steps in both the servers (Application and Database)
+
 ### Update System Packages
 It is always a good idea to upgrade the Ubuntu package if anything is available, run the below command to upgrade and update.
     
@@ -35,13 +37,115 @@ It is always recommended to reboot the server once the upgrade is done.
     sudo reboot
 
 ### Create a new user
-I am using **erpnext** as frappe-user
+I am using **wsc** as frappe-user
 
 #### you should not use _frappe_ or _erpnext_ as a frappe-user on your production server.
 
-    sudo adduser erpnext
-    sudo usermod -aG sudo erpnext
-    su - erpnext  
+    sudo adduser wsc
+    sudo usermod -aG sudo wsc
+    su - wsc  
+
+
+
+## Follow these steps in the Database server
+
+
+###Setup the remote DB to accept remote connections
+
+### Install MariaDB 10.6 stable package
+MariaDB is developed as open source software and as a relational database it provides an SQL interface for accessing data.
+ 
+For ubuntu 22.04
+
+    sudo apt install mariadb-server -y
+
+IMPORTANT: During this installation you'll be prompted to set the MySQL root password.
+If you are not prompted for the same You can initialize the MySQL server setup by executing the following command
+    
+    sudo mysql_secure_installation
+    
+#### Prompt
+``` 
+Enter current password for root (enter for none):   (safely press Enter)
+Switch to unix_socket authentication [Y/n]          (Press "Y")
+Change the root password? [Y/n]                     (Press "Y")
+New password:                                       ("Enter new Password")
+Re-enter new password:                              ("Re-enter new Password")
+Remove anonymous users? [Y/n]                       (Press "Y")
+Disallow root login remotely? [Y/n]                 (Press "Y") //If Press "N" then You want to access the database from a remote server for using business analytics software like Metabase / PowerBI / Tableau, etc.
+Remove test database and access to it? [Y/n]        (Press "Y")
+Reload privilege tables now? [Y/n]                  (Press "Y")
+```
+
+### MySQL database development files
+
+    sudo apt install libmysqlclient-dev -y
+
+### Edit the mariadb configuration (unicode character encoding)
+You need to ensure to change the default character set of MySQL or MariaDB to Unicode instead of general. To do this you will need to edit the maria DB configuration file which is in this version located at /etc/mysql/mariadb.conf.d directory so you can directly edit this or locate the folder and then edit the file by typing the below command.
+
+    sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+
+Once the file opens you need to locate the line where collation-server says general and you need to modify it to Unicode as below,
+
+    collation-server = utf8mb4_general_ci
+
+Modify above as below.
+
+    collation-server = utf8mb4_unicode_ci
+
+Accept remote connections by changing its bind-address from 127.0.0.1 to 0.0.0.0
+    
+    bind-address = 127.0.0.1
+
+Modify above as below.
+
+   bind-address = 0.0.0.0
+   
+Now press (Ctrl-X) and Save then exit.
+
+Login to your MySQL and create a database user that Frappe will use to authenticate.
+
+    CREATE USER 'root'@'[IP ADDRESS FOR Application HOST]' IDENTIFIED BY '[YOUR PASSWORD OF CHOICE]';
+    
+Grant the created root user permissions to make changes to the created databases.
+
+    GRANT ALL PRIVILEGES ON *.* TO 'root'@'[IP ADDRESS FOR Application HOST]' IDENTIFIED BY 'YOUR PASSWORD OF CHOICE' WITH GRANT OPTION;
+    
+Flush the privileges to effect changes to the database and log out from MySQL.
+
+    FLUSH PRIVILEGES;
+
+    EXIT;
+
+And also locate my.cnf and edit the below configuration.
+
+    sudo nano /etc/mysql/my.cnf
+
+Make sure your configuration has the below lines in the file.
+
+    [mysqld]
+    character-set-client-handshake = FALSE
+    character-set-server = utf8mb4
+    collation-server = utf8mb4_unicode_ci
+
+    [mysql]
+    default-character-set = utf8mb4
+
+Now press (Ctrl-X) and Save then exit and Restart MySQL server to effect all the made changes..
+
+    sudo service mysql restart
+
+### Install NGINX
+Nginx is an open-source web server that, since its initial success as a web server, 
+is now also used as a reverse proxy, HTTP cache, and load balancer.
+
+    sudo apt -y install nginx
+    
+
+
+
+## Follow these steps in the Application server
 
 ### Install git
 Git is the most commonly used version control system. Git tracks the changes you make to files, so you have a record of what has been done, and you can revert to specific versions should you ever need to. Git also makes collaboration easier, allowing changes by multiple people to all be merged into one source.
@@ -195,13 +299,27 @@ Now you can use various bench commands by changing the directory. So you can nee
 Once you type "bench" you will see the various commands that bench cli has. Don’t worry, we will not be using all the commands, we just need to install EPRNext but have a quick look at these commands.
     
     bench version
-    
+ 
+ 
+### Setup your ERPNext or Frappe Framework Installation to connect to your remote Database
+
+    bench set-mariadb-host [IP ADDRESS FOR DATABASE HOST]
+
+Restart supervisor if your instance is in production mode
+
+    supervisorctl restart all
+
+If your instance is in development mode, restart bench
+
+    bench restart
+ 
 ### Create a site in frappe bench 
+
 Now you have the application installed in your environment. The next step is to install the application on-site, but before that, we need to create a new site.
     
-    bench new-site <sitename> --db-name <dbname>
+    bench new-site <sitename> --db-name <dbname> --mariadb-root-password [YOUR PASSWORD OF CHOICE] 
     eg.
-    bench new-site erp.com --db-name erpdb
+    bench new-site erp.com --db-name erpdb --mariadb-root-password [YOUR PASSWORD OF CHOICE]  
 
 Now site is deployed, by default frappe application will be installed at site. Don’t open the site yet, because we need to install ERPNext to the site.
 
@@ -222,7 +340,7 @@ Now ERPNext is installed in your server and you are ready to configure it. But b
 ### Production Deployment
 We will use an automatic bench set up for production by using the below command.
 
-    sudo bench setup production erpnext
+    sudo bench setup production wsc
     bench restart
     
 If getting [Error 13] on bench restart
@@ -241,7 +359,7 @@ Edit the supervisord configuration file (/etc/supervisor/supervisord.conf)
     
 ### If _js_ and _css_ file is not loading on login window run the following command
     
-    sudo chmod o+x /home/erpnext
+    sudo chmod o+x /home/wsc
     
   
 ### Setup Multitenancy (DNS)
@@ -267,4 +385,3 @@ To make a new site under DNS based multitenancy, perform the following steps.
 
       sudo service nginx reload
     
-### SSL Installation NginX
