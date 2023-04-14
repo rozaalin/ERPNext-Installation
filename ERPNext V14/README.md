@@ -100,7 +100,7 @@ Accept remote connections by changing its bind-address from 127.0.0.1 to 0.0.0.0
 
 Modify above as below.
 
-   bind-address = 0.0.0.0
+    bind-address = 0.0.0.0
    
 Now press (Ctrl-X) and Save then exit.
 
