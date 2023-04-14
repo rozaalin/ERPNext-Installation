@@ -177,68 +177,6 @@ Now install the below package to manage the repository, usually, Ubuntu 22.04 ha
     sudo apt install software-properties-common -y
  if prompt for "Override local changes to /etc/pam.d/common-*?" on PAM Configuration, then safely choose "No".
 
-### Install MariaDB 10.6 stable package
-MariaDB is developed as open source software and as a relational database it provides an SQL interface for accessing data.
- 
-For ubuntu 22.04
-
-    sudo apt install mariadb-server -y
-
-IMPORTANT: During this installation you'll be prompted to set the MySQL root password.
-If you are not prompted for the same You can initialize the MySQL server setup by executing the following command
-    
-    sudo mysql_secure_installation
-    
-#### Prompt
-``` 
-Enter current password for root (enter for none):   (safely press Enter)
-Switch to unix_socket authentication [Y/n]          (Press "Y")
-Change the root password? [Y/n]                     (Press "Y")
-New password:                                       ("Enter new Password")
-Re-enter new password:                              ("Re-enter new Password")
-Remove anonymous users? [Y/n]                       (Press "Y")
-Disallow root login remotely? [Y/n]                 (Press "Y") //If Press "N" then You want to access the database from a remote server for using business analytics software like Metabase / PowerBI / Tableau, etc.
-Remove test database and access to it? [Y/n]        (Press "Y")
-Reload privilege tables now? [Y/n]                  (Press "Y")
-```
-
-### MySQL database development files
-
-    sudo apt install libmysqlclient-dev -y
-
-### Edit the mariadb configuration (unicode character encoding)
-You need to ensure to change the default character set of MySQL or MariaDB to Unicode instead of general. To do this you will need to edit the maria DB configuration file which is in this version located at /etc/mysql/mariadb.conf.d directory so you can directly edit this or locate the folder and then edit the file by typing the below command.
-
-    sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
-
-Once the file opens you need to locate the line where collation-server says general and you need to modify it to Unicode as below,
-
-    collation-server = utf8mb4_general_ci
-
-Modify above as below.
-
-    collation-server = utf8mb4_unicode_ci
-
-Now press (Ctrl-X) and Save then exit.
-
-And also locate my.cnf and edit the below configuration.
-
-    sudo nano /etc/mysql/my.cnf
-
-Make sure your configuration has the below lines in the file.
-
-    [mysqld]
-    character-set-client-handshake = FALSE
-    character-set-server = utf8mb4
-    collation-server = utf8mb4_unicode_ci
-
-    [mysql]
-    default-character-set = utf8mb4
-
-Now press (Ctrl-X) and Save then exit.
-
-    sudo service mysql restart
-
 ### Install Redis
 Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache, and message broker.
     
