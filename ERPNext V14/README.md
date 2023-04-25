@@ -225,8 +225,8 @@ Let us now create the frappe-bench environment. Here you have to decide the purp
     
 To choose a specific stable version (for Production) you can use the branch version. I will be using branch version 14 in this installation. You can look for the latest stable release of the frappe environment.
 
-    bench init frappe-bench --verbose --frappe-branch version-14
-
+    bench init frappe-bench --verbose --frappe-branch v14.26.0
+    
 Now frappe bench environment is installed using bench CLI.
 
 Now you can use various bench commands by changing the directory. So you can need to change the directory.
