@@ -175,28 +175,6 @@ MariaDB is developed as open source software and as a relational database it pro
 For ubuntu 22.04
 
     sudo apt install mariadb-server -y
-
-IMPORTANT: During this installation you'll be prompted to set the MySQL root password.
-If you are not prompted for the same You can initialize the MySQL server setup by executing the following command
-    
-    sudo mysql_secure_installation
-    
-#### Prompt
-``` 
-Enter current password for root (enter for none):   (safely press Enter)
-Switch to unix_socket authentication [Y/n]          (Press "Y")
-Change the root password? [Y/n]                     (Press "Y")
-New password:                                       ("Enter new Password")
-Re-enter new password:                              ("Re-enter new Password")
-Remove anonymous users? [Y/n]                       (Press "Y")
-Disallow root login remotely? [Y/n]                 (Press "Y") //If Press "N" then You want to access the database from a remote server for using business analytics software like Metabase / PowerBI / Tableau, etc.
-Remove test database and access to it? [Y/n]        (Press "Y")
-Reload privilege tables now? [Y/n]                  (Press "Y")
-```
-
-### MySQL database development files
-
-    sudo apt install libmysqlclient-dev -y
     
 ### Install Redis
 Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache, and message broker.
