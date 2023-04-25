@@ -136,14 +136,6 @@ Now press (Ctrl-X) and Save then exit and Restart MySQL server to effect all the
 
     sudo service mysql restart
 
-### Install NGINX
-Nginx is an open-source web server that, since its initial success as a web server, 
-is now also used as a reverse proxy, HTTP cache, and load balancer.
-
-    sudo apt -y install nginx
-    
-
-
 
 ## Follow these steps in the Application server
 
