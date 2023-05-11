@@ -174,7 +174,7 @@ MariaDB is developed as open source software and as a relational database it pro
  
 For ubuntu 22.04
 
-    sudo apt install mariadb-server -y
+    sudo apt install mariadb-client -y
     
 ### Install Redis
 Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache, and message broker.
