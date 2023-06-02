@@ -322,3 +322,8 @@ To make a new site under DNS based multitenancy, perform the following steps.
 
       sudo service nginx reload
     
+
+
+
+
+bench new-site wsc.erp.com --db-name erp_db --db-password wsc@123 --db-host 10.0.2.15 --db-root-username erp --db-root-password wsc@123 
