@@ -97,7 +97,7 @@ Now press (Ctrl-X) and Save then exit.
 
     bench start 
     
-    sudo bench setup production erpnext
+    sudo bench setup production wsc
     
     bench restart
     
