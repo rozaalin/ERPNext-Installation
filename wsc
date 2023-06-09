@@ -1,1 +1,108 @@
+  sudo apt update && sudo apt upgrade -y
+  date
+  timedatectl set-timezone "Asia/Kolkata"
+
+
+  sudo adduser wsc
+  sudo usermod -aG sudo wsc
+  su - wsc  
+
+  sudo apt install git -y
+
+  sudo apt install python3-dev python3-venv -y
+
+  sudo apt install python3-setuptools python3-pip -y
+
+  sudo apt install software-properties-common -y
+
+  sudo apt install mariadb-server -y
+
+  sudo mysql_secure_installation
+
+        Enter current password for root (enter for none):   (safely press Enter)
+        Switch to unix_socket authentication [Y/n]          (Press "Y")
+        Change the root password? [Y/n]                     (Press "Y")
+        New password:                                       ("Enter new Password")
+        Re-enter new password:                              ("Re-enter new Password")
+        Remove anonymous users? [Y/n]                       (Press "Y")
+        Disallow root login remotely? [Y/n]                 (Press "Y") //If Press "N" then You want to access the database from a remote server for using business analytics software like Metabase / PowerBI / Tableau, etc.
+        Remove test database and access to it? [Y/n]        (Press "Y")
+        Reload privilege tables now? [Y/n]                  (Press "Y")
+
+  sudo apt install libmysqlclient-dev -y
+
+  sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+
+Once the file opens you need to locate the line where collation-server says general and you need to modify it to Unicode as below,
+
+    collation-server = utf8mb4_general_ci
+
+Modify above as below.
+
+    collation-server = utf8mb4_unicode_ci
+
+Now press (Ctrl-X) and Save then exit.
+
+And also locate my.cnf and edit the below configuration.
+
+    sudo nano /etc/mysql/my.cnf
+
+Make sure your configuration has the below lines in the file.
+
+    [mysqld]
+    character-set-client-handshake = FALSE
+    character-set-server = utf8mb4
+    collation-server = utf8mb4_unicode_ci
+
+    [mysql]
+    default-character-set = utf8mb4
+
+Now press (Ctrl-X) and Save then exit.
+
+    sudo service mysql restart
+    
+    sudo apt install redis-server -y
+    
+    sudo apt install curl
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+    source ~/.profile
+    nvm install v16
+    
+    node -v
+    
+    sudo apt install npm -y
+    sudo npm install -g yarn
+    
+    sudo apt install xvfb libfontconfig wkhtmltopdf -y
+   
+    sudo apt -y install nginx
+    
+    sudo -H pip3 install frappe-bench
+    
+    bench --version
+    
+    bench init frappe-bench --verbose --frappe-branch version-14
+    
+    cd frappe-bench/
+    
+    bench version
+    
+    bench new-site <sitename> --db-name <dbname>
+    
+    bench get-app payments --branch version-14
+    
+    bench get-app erpnext --branch version-14
+                  
+    bench --site erp.com install-app erpnext
+
+    bench start 
+    
+    sudo bench setup production erpnext
+    
+    bench restart
+    
+    bench use sitename
+    
+    
+
 
