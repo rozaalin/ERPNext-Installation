@@ -103,6 +103,65 @@ Now press (Ctrl-X) and Save then exit.
     
     bench use sitename
     
+    bench get-app https://github.com/frappe/hrms.git --branch version-14
+    bench --site <site name> install-app hrms
+
+    bench get-app https://github.com/frappe/education.git
+    bench --site <site name> install-app education
+    git fetch upstream --unshallow
+    git checkout 0088bc496afc9f1fbb4903ac18562a8e0327a11a
+
+
+    sudo ./env/bin/pip install numpy
+    sudo ./env/bin/pip install pandas
+    bench migrate
+    bench restart
+
+
+    bench get-app https://github.com/EduLeadERP/WSC.git
+    bench --site <site name> install-app wsc
+
+    Subhajit-SOUL
+    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
+   
+    sudo groupadd wscgroup
+
+    sudo usermod -aG wscgroup www-data
+    sudo chgrp wscgroup /home/wsc
+    sudo chmod g+x /home/wsc
+    bench --site all clear-cache
+    sudo service nginx restart
     
+    
+    
+    /etc/default/locale
+    sudo update-locale LANG=en_US.UTF-8 LC_CTYPE=en_US.UTF-8
+    
+    
+   
+   
+    Before SSL setup (Setup Multitenancy )
+    Switch on DNS based multitenancy (once)
+    bench config dns_multitenant on
+    Re generate nginx config
+    bench setup nginx
+    Reload nginx
+    sudo service nginx reload
+    
+    
+    
+    
+    
+    sudo apt-get install software-properties-common
 
+    sudo snap install core; sudo snap refresh core
 
+    sudo apt-get update
+
+    sudo snap install --classic certbot
+
+    sudo apt-get install python3-certbot-nginx
+
+    sudo -H bench setup lets-encrypt sandboxwsc.eduleadonline.com
+
+    bench restart
