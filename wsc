@@ -109,6 +109,8 @@ Now press (Ctrl-X) and Save then exit.
     
     bench restart
     
+    
+    sudo groupadd wscgroup
     sudo usermod -aG wscgroup www-data
     sudo chgrp wscgroup /home/wsc
     sudo chmod g+x /home/wsc
@@ -141,7 +143,7 @@ Now press (Ctrl-X) and Save then exit.
     Subhajit-SOUL
     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
    
-    sudo groupadd wscgroup
+   
 
 
     
