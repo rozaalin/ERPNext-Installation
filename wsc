@@ -87,6 +87,9 @@ Now press (Ctrl-X) and Save then exit.
     
     bench version
     
+    sudo nano /etc/redis/redis.conf
+    sudo service redis-server restart
+    
     bench new-site <sitename> --db-name <dbname>
     
     bench get-app payments --branch version-14
