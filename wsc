@@ -109,6 +109,15 @@ Now press (Ctrl-X) and Save then exit.
     
     bench restart
     
+    sudo usermod -aG wscgroup www-data
+    sudo chgrp wscgroup /home/wsc
+    sudo chmod g+x /home/wsc
+    bench --site all clear-cache
+    sudo service nginx restart
+    
+    
+    
+    
     
     
     bench get-app https://github.com/frappe/hrms.git --branch version-14
@@ -134,11 +143,7 @@ Now press (Ctrl-X) and Save then exit.
    
     sudo groupadd wscgroup
 
-    sudo usermod -aG wscgroup www-data
-    sudo chgrp wscgroup /home/wsc
-    sudo chmod g+x /home/wsc
-    bench --site all clear-cache
-    sudo service nginx restart
+
     
     
     
