@@ -140,8 +140,7 @@ Now press (Ctrl-X) and Save then exit.
     bench get-app https://github.com/EduLeadERP/WSC.git
     bench --site <site name> install-app wsc
 
-    Subhajit-SOUL
-    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
+ 
    
  
     
